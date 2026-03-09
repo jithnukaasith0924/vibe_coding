@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamage Bhathiya Gamage - Profile</title>
+    <!-- Google Fonts for modern typography -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f15;
+            /* Deep dark blue */
+            --card-bg: rgba(17, 24, 39, 0.4);
+            /* Glassmorphism base */
+            --primary-neon: #00f0ff;
+            /* Cyan accent */
+            --secondary-neon: #3b82f6;
+            /* Blue accent */
+            --accent-purple: #8b5cf6;
+            /* Purple accent */
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --grid-color: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            /* DevOps-style Grid & Soft Radial Glow Background */
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.08), transparent 25%),
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        .tilt-container {
+            perspective: 1200px;
+            width: 100%;
+            max-width: 480px;
+            z-index: 10;
+        }
+
+        .card {
+            background: var(--card-bg);
+            /* Glassmorphism Styles */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.02);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        /* Subtle glowing border pseudo-element */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, var(--primary-neon), var(--accent-purple));
+            z-index: -1;
+            opacity: 0.15;
+            filter: blur(12px);
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 0.25;
+        }
+
+        .profile-header {
+            text-align: center;
+            transform: translateZ(50px);
+            margin-bottom: 25px;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--bg-color);
+        }
+
+        .name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stream {
+            font-size: 0.95rem;
+            color: var(--primary-neon);
+            font-weight: 500;
+            display: inline-block;
+            background: rgba(0, 240, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+
+        .bio {
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            transform: translateZ(35px);
+            padding: 0 10px;
+        }
+
+        /* Technical Skills Section */
+        .skills-container {
+            transform: translateZ(25px);
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .skill {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .skill-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            width: 0;
+            /* Will be animated */
+            background: linear-gradient(90deg, var(--secondary-neon), var(--primary-neon));
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Social Links */
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            transform: translateZ(35px);
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-neon);
+            color: var(--primary-neon);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .social-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* Contact Button */
+        .contact-action {
+            transform: translateZ(45px);
+            text-align: center;
+        }
+
+        .contact-btn {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--secondary-neon), var(--primary-neon));
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 240, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 240, 255, 0.5);
+            background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+        }
+
+        .contact-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #000;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .skills-container {
+                grid-template-columns: 1fr;
+                /* 1 column on small screens */
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tilt-container">
+        <div class="card" id="profile-card">
+
+            <div class="profile-header">
+                <div class="avatar-container">
+                    <!-- Avatar Image -->
+                    <img src="6-11288274534-178014656-1024x1024-2x-500x500.jpg" alt="Gamage Bhathiya Gamage" class="avatar">
+                </div>
+                <h1 class="name">Gamage Bhathiya Gamage</h1>
+                <div class="stream">Information Systems | UCSC</div>
+            </div>
+
+            <p class="bio">
+                Professional with 5+ years of experience in Python. Specialist in Cloud Infrastructure (GCP, Azure,
+                DigitalOcean, Akamai) and Networking, with deep expertise in Load Balancing and Open Source Router OSes
+                like OpenWRT and OPNsense.
+            </p>
+
+            <div class="skills-container" id="skills">
+                <!-- Skill 1 -->
+                <div class="skill">
+                    <div class="skill-header">
+                        <span>Python</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" data-target="95%"></div>
+                    </div>
+                </div>
+                <!-- Skill 2 -->
+                <div class="skill">
+                    <div class="skill-header">
+                        <span>Cloud / GCP / Azure</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" data-target="90%"></div>
+                    </div>
+                </div>
+                <!-- Skill 3 -->
+                <div class="skill">
+                    <div class="skill-header">
+                        <span>Networking</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" data-target="85%"></div>
+                    </div>
+                </div>
+                <!-- Skill 4 -->
+                <div class="skill">
+                    <div class="skill-header">
+                        <span>OpenWRT / OPNsense</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar-fill" data-target="90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="socials">
+                <a href="https://www.linkedin.com/in/bhathiya-gamage" target="_blank" class="social-btn"
+                    title="LinkedIn">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                </a>
+                <a href="https://github.com/horapusa-lk" target="_blank" class="social-btn" title="GitHub">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                </a>
+                <a href="mailto:hello@apaloai.com" class="social-btn" title="Email">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="contact-action">
+                <a id="contact-btn" href="mailto:hello@apaloai.com" class="contact-btn" style="text-decoration: none;">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    Contact Me
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Animated Skill Progress Bars
+            const skillBars = document.querySelectorAll('.skill-bar-fill');
+
+            // Allow slight delay for page render, then animate widths
+            setTimeout(() => {
+                skillBars.forEach(bar => {
+                    const targetWidth = bar.getAttribute('data-target');
+                    bar.style.width = targetWidth;
+                });
+            }, 300);
+
+            // 2. 3D Tilt / Parallax Effect
+            const container = document.querySelector('.tilt-container');
+            const card = document.getElementById('profile-card');
+
+            // Mouse move handler
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // Restrict rotation max angles (e.g., max 12 degrees)
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            // Smooth reset on mouse leave
+            container.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+            });
+
+            // Remove transition when interacting for responsive feel
+            container.addEventListener('mouseenter', () => {
+                card.style.transition = 'none';
+            });
+
+        });
+    </script>
+</body>
+
+
+</html>
